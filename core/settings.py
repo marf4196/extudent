@@ -37,8 +37,34 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # REST
+    'rest_framework',
+    'rest_framework_swagger',
+    "drf_spectacular",
+    # local
 ]
 
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+    "DEFAULT_AUTHENTICATION_CLASSES": [ 
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
+    
+],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+# django_project/settings.py
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Blog API Project",
+    "DESCRIPTION": "A sample blog to learn about DRF",
+    "VERSION": "1.0.0",
+    # OTHER SETTINGS
+    }
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

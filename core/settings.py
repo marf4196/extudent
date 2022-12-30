@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_swagger',
     "drf_spectacular",
+    'rest_framework_simplejwt',
     # local
 ]
 
@@ -50,18 +51,17 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ],
-    "DEFAULT_AUTHENTICATION_CLASSES": [ 
-        "rest_framework.authentication.SessionAuthentication",
-        "rest_framework.authentication.BasicAuthentication",
-    
-],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 # django_project/settings.py
 SPECTACULAR_SETTINGS = {
-    "TITLE": "Blog API Project",
-    "DESCRIPTION": "A sample blog to learn about DRF",
+    "TITLE": "EXtudent Api project",
+    "DESCRIPTION": "project schema",
     "VERSION": "1.0.0",
     # OTHER SETTINGS
     }

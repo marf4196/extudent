@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from accounts.models import User, Profile
+from accounts.models import User, Profile, UserIdentDocs
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -34,6 +34,18 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = [
-            "first_name",
-            "last_name",
+            "f_name",
+            "l_name",
         ]
+class UserIdentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserIdentDocs
+        fields = [
+            "owner",
+            "code_melli",
+            "img",
+            "video",
+            "is_complete",
+            
+        ]
+# add is verified and check is complete after  sending docs

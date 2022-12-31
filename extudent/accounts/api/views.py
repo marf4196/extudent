@@ -1,11 +1,13 @@
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated,IsAdminUser
 from django.shortcuts import get_object_or_404
 from .serializers import (
     ProfileSerializer,
     RegisterSerializer,
+    UserIdentSerializer
 )
 from accounts.models import Profile
 
@@ -32,7 +34,18 @@ class ProfileApiView(generics.RetrieveUpdateAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticated]
-
+    
+    def get_object(self):
+        queryset = self.get_queryset()
+        obj = get_object_or_404(queryset, user=self.request.user)
+        return obj
+    
+    
+class UserDocApiView(generics.RetrieveUpdateAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = UserIdentSerializer
+    permission_classes = [IsAdminUser]
+    
     def get_object(self):
         queryset = self.get_queryset()
         obj = get_object_or_404(queryset, user=self.request.user)

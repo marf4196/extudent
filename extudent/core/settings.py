@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "drf_yasg",
     "accounts",
+    "message.apps.MessageConfig",
+    "orders",
 ]
 
 MIDDLEWARE = [

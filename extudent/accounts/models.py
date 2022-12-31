@@ -76,6 +76,7 @@ class Profile(models.Model):
     video = models.FileField(null=True)
     ############################
     ballance = models.PositiveBigIntegerField(default=0)
+    is_complete = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.email
@@ -85,3 +86,15 @@ class Profile(models.Model):
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
+
+class UserIdentDocs(models.Model):
+    owner = models.ForeignKey(User,on_delete=models.CASCADE, related_name = "user_ident_Docs")
+    code_melli = models.PositiveBigIntegerField(null=True)
+    img = models.ImageField(null=True)
+    # upload to required 
+    ############################
+    video = models.FileField(null=True)
+    ############################
+    ballance = models.PositiveBigIntegerField(default=0)
+    is_complete = models.BooleanField(default=False)
+    

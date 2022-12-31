@@ -43,10 +43,12 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(_("email address"), unique=True)
     is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
+    
+    is_active = models.BooleanField(default=False)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
-
+    
+    
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
@@ -62,10 +64,18 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=255, blank=True, null=True)
-    last_name = models.CharField(max_length=255, blank=True, null=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
+    f_name = models.CharField(max_length=55,null=True, blank=True)
+    l_name = models.CharField(max_length=55,null=True, blank=True)
+    phone_number = models.PositiveBigIntegerField(null=True)
+    code_melli = models.PositiveBigIntegerField(null=True)
+    img = models.ImageField(null=True)
+    # upload to required 
+    ############################
+    video = models.FileField(null=True)
+    ############################
+    ballance = models.PositiveBigIntegerField(default=0)
 
     def __str__(self):
         return self.user.email

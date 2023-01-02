@@ -9,7 +9,7 @@ from .serializers import (
     RegisterSerializer,
     UserIdentSerializer
 )
-from accounts.models import Profile
+from accounts.models import Profile, UserIdentDocs
 
 
 class RegisterApiView(generics.GenericAPIView):
@@ -41,10 +41,10 @@ class ProfileApiView(generics.RetrieveUpdateAPIView):
         return obj
     
     
-class UserDocApiView(generics.RetrieveUpdateAPIView):
-    queryset = Profile.objects.all()
+class UserDocApiView(generics.ListCreateAPIView):
+    queryset = UserIdentDocs.objects.filter(is_complete=False)
     serializer_class = UserIdentSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated]
     
     def get_object(self):
         queryset = self.get_queryset()

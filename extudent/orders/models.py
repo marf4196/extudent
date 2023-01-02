@@ -19,4 +19,3 @@ class Orders(models.Model):
     owner = models.ForeignKey(User,on_delete=models.CASCADE,related_name="order_creator")
     buyer =models.ForeignKey(User,on_delete=models.CASCADE,related_name="order_buyer")
     status = models.BooleanField(default=False)
-    

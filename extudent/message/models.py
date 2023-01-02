@@ -8,4 +8,3 @@ class Message(models.Model):
     text = models.TextField()
     attached_pic = models.ImageField(null=True)
     is_recived = models.BooleanField(default=False)
-    

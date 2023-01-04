@@ -44,9 +44,9 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "rest_framework_simplejwt",
     "drf_yasg",
-    "accounts",
+    "accounts.apps.AccountsConfig",
     "message.apps.MessageConfig",
-    "orders",
+    "orders.apps.OrdersConfig",
 ]
 
 MIDDLEWARE = [

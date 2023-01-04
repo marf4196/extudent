@@ -69,14 +69,7 @@ class Profile(models.Model):
     f_name = models.CharField(max_length=55,null=True, blank=True)
     l_name = models.CharField(max_length=55,null=True, blank=True)
     phone_number = models.PositiveBigIntegerField(null=True)
-    code_melli = models.PositiveBigIntegerField(null=True)
-    img = models.ImageField(null=True)
-    # upload to required 
-    ############################
-    video = models.FileField(null=True)
-    ############################
-    ballance = models.PositiveBigIntegerField(default=0)
-    is_complete = models.BooleanField(default=False)
+    ballance = models. PositiveBigIntegerField(default=0)
 
     def __str__(self):
         return self.user.email
@@ -95,6 +88,5 @@ class UserIdentDocs(models.Model):
     ############################
     video = models.FileField(null=True)
     ############################
-    ballance = models.PositiveBigIntegerField(default=0)
     is_complete = models.BooleanField(default=False)
     

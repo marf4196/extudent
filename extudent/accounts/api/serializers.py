@@ -36,8 +36,9 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = [
             "f_name",
             "l_name",
+            "phone_number",
         ]
-class UserIdentSerializer(serializers.ModelSerializer):
+class AdminUserIdentSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserIdentDocs
         fields = [
@@ -46,6 +47,5 @@ class UserIdentSerializer(serializers.ModelSerializer):
             "img",
             "video",
             "is_complete",
-            
         ]
 # add is verified and check is complete after  sending docs

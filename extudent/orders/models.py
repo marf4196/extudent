@@ -19,7 +19,11 @@ class Orders(models.Model):
     currency = models.CharField(choices=CURRENCY_CHOICES, max_length=20)
     buyer = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="order_buyer")
     status = models.BooleanField(default=False)
-
+    
+    def __str__(self):
+        return self.description[:30]
+    
+    
     @property
     def get_status(self):
         return self.status

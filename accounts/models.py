@@ -40,7 +40,7 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-
+    
     email = models.EmailField(_("email address"), unique=True)
     is_staff = models.BooleanField(default=False)
     
@@ -56,10 +56,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
-
-    @property
-    def fullname(self):
-        return f"{self.first_name} {self.last_name}"
 
 
 class Profile(models.Model):

@@ -67,6 +67,7 @@ class Profile(models.Model):
     phone_number = models.PositiveBigIntegerField(null=True)
     ballance = models. PositiveBigIntegerField(default=0)
     is_verified = models.BooleanField(default=False)
+    rand_int = models.PositiveBigIntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.user.email

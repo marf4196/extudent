@@ -5,6 +5,7 @@ from ...models import Orders
 from accounts.models import Profile, UserIdentDocs
 
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 
 from rest_framework.response import Response
 from rest_framework import permissions
@@ -75,3 +76,16 @@ class OrdersListApiView(viewsets.ViewSet):
             return Response({"details":"you dont have access to update this order"})
             
 
+class UserCompletedOrders(viewsets.ViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = ListCreateDeleteOrderSerializer
+    
+    def list(self, request):
+        queryset = Orders.objects.filter(Q(owner=self.request.user)| Q(buyer=self.request.user)).filter(Q(status=True))
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
+    def retrive(self,request, pk=None):
+        queryset = Orders.objects.filter(Q(owner=self.request.user)| Q(buyer=self.request.user)).filter(Q(status=True, pk=pk))
+        serializer = self.serializer_class(queryset)
+        return Response(serializer.data)
+        

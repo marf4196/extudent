@@ -2,6 +2,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics
 
+
 from rest_framework import viewsets
 from rest_framework.parsers import MultiPartParser, FormParser , DataAndFiles
 from rest_framework.renderers import (
@@ -35,17 +36,33 @@ class RegisterApiView(generics.GenericAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ProfileApiView(generics.RetrieveUpdateAPIView):
-    queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
+def rand_int_generator():
+    pass
+class ProfileViewSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
-
-    def get_object(self):
-        queryset = self.get_queryset()
-        obj = get_object_or_404(queryset, user=self.request.user)
-        return obj
-
-
+    serializer_class = ProfileSerializer
+    
+    def retrive(self, request, pk=None):
+        # fo viewing profile 
+        queryset = Profile.objects.filter(user=self.request.user)
+        profile_obj = get_object_or_404(queryset, pk=pk)
+        serializer = self.serializer_class(profile_obj)
+        return Response(serializer.data)
+    
+    def partial_update(self, request, pk=None):
+        # for verifying profile
+        queryset = Profile.objects.filter(user=self.request.user)
+        profile_obj = get_object_or_404(queryset, pk=pk)
+        serializer = self.serializer_class(profile_obj, partila=True)
+        
+        serializer.initial_data["user"]= self.request.user
+        if serializer.is_valid(raise_exception=True):
+            rand_int_generator(profile_obj)
+            # #######################
+            # call a function to send sms to user
+            # if send_sms():
+            #   serializer.save()
+            return Response({"details":"profile vrified"})
 
 class UserDocAdminViewSet(viewsets.ViewSet):
     """User docs admin view set"""

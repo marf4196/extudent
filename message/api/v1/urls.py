@@ -1,7 +1,7 @@
 from django.urls import path, include
-from .views import MessageGenericApiView
+from .views import UserMessageViewSet
 
 urlpatterns = [
     ####
-    path("userMessage",MessageGenericApiView.as_view(), name="userMessage"),
+    path("userMessage/",UserMessageViewSet.as_view({"get":"list","post":"create"}), name="userMessage"),
 ]

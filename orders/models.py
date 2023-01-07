@@ -12,12 +12,19 @@ class Orders(models.Model):
         (EURO, 'EURO'),
         (POUND, 'POUND'),
     ]
+    BUY = "BUY"
+    SELL = "SELL"
+    ORDER_TYPE = [
+        (BUY, 'BUY'),
+        (SELL, 'SELL'),
+    ]
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="order_creator")
     amount = models.PositiveBigIntegerField(default=0)
     price = models.PositiveBigIntegerField(default=0)
     description = models.TextField()
     currency = models.CharField(choices=CURRENCY_CHOICES, max_length=20)
     buyer = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="order_buyer")
+    order_type = models.CharField(choices=ORDER_TYPE)
     status = models.BooleanField(default=False)
     
     def __str__(self):

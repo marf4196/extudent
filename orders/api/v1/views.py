@@ -2,7 +2,7 @@ from .serializer import ListCreateDeleteOrderSerializer
 from rest_framework import viewsets, generics
 
 from ...models import Orders
-from accounts.models import Profile
+from accounts.models import Profile, UserIdentDocs
 
 from django.shortcuts import get_object_or_404
 
@@ -28,11 +28,9 @@ class OrdersListApiView(viewsets.ViewSet):
         serializer = self.serializer_class(data=request.data)
         
         if serializer.is_valid(raise_exception=True):
-            serializer.save()
             owner = self.request.data["owner"]
+            serializer.save()
             profile_obj= Profile.objects.get(user=owner)
-            profile_obj.ballance -= (self.request.data["price"] * self.request.data["amount"])
-            profile_obj.save()
             return Response({"detail": "order created"})
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -44,7 +42,6 @@ class OrdersListApiView(viewsets.ViewSet):
         owner = self.request.user
         profile_obj= Profile.objects.get(user=owner)
         order_obj.delete()
-        profile_obj.ballance += serializer.data["price"] * serializer.data["amount"]
         
         return Response({"detail": "order deleted call the admin and wait for your money back"})
 
@@ -57,15 +54,23 @@ class OrdersListApiView(viewsets.ViewSet):
         order_obj = get_object_or_404(self.queryset, pk=pk)
         serializer = self.serializer_class(order_obj, data=request.data)
         buyer = self.request.user
+        buyer_identity = UserIdentDocs.objects.get(user=buyer)
+        
         if buyer != order_obj.owner:
-            buyer_profile = Profile.objects.get(user=buyer)
-            if  serializer.is_valid(raise_exception=True):
-                serializer.data["status"] = request.data["status"]
-                serializer.save()
-                buyer_profile.ballance -= (order_obj.price * order_obj.amount)
-                buyer_profile.save()
+            if buyer_identity.is_complete == True:
+                buyer_profile = Profile.objects.get(user=buyer)
+                if  serializer.is_valid(raise_exception=True):
+                    serializer.data["status"] = request.data["status"]
+                    if buyer_profile.ballance >= (order_obj.price * order_obj.amount):
+                        buyer_profile.ballance -= (order_obj.price * order_obj.amount)
+                        serializer.save()
+                        buyer_profile.save()
+                    else:
+                        return Response({"details":"you should deposit into your wallet first, not enough money"})
+                else:
+                    return Response({"details":"data is invalid"})
             else:
-                return Response({"details":"data is invalid"})
+                return Response({"details":"you must upload your own identity docs"})
         else:
             return Response({"details":"you dont have access to update this order"})
             

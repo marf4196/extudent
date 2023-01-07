@@ -66,6 +66,7 @@ class Profile(models.Model):
     l_name = models.CharField(max_length=55,null=True, blank=True)
     phone_number = models.PositiveBigIntegerField(null=True)
     ballance = models. PositiveBigIntegerField(default=0)
+    is_verified = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.email

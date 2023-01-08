@@ -16,7 +16,7 @@ from rest_framework.renderers import (
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from django.shortcuts import get_object_or_404
-from .serializers import ProfileSerializer, RegisterSerializer, AdminUserIdentSerializer
+from .serializers import ProfileSerializer, RegisterSerializer, AdminUserIdentSerializer, UserIdentSerializer
 from accounts.models import Profile, UserIdentDocs
 
 
@@ -50,11 +50,12 @@ class ProfileViewSet(viewsets.ViewSet):
         return Response(serializer.data)
 
     def partial_update(self, request, pk=None):
-        # for verifying profile
+        # add number for verifying profile
         queryset = Profile.objects.filter(user=self.request.user)
         profile_obj = get_object_or_404(queryset, pk=pk)
         serializer = self.serializer_class(profile_obj, partial=True)
         serializer.initial_data["user"] = self.request.user
+        if serializer.initial_data["phone_number"] != "":
         if serializer.is_valid(raise_exception=True):
             rand_integer = random.randint(0, 999999)
             queryset.rand_int = rand_integer
@@ -63,8 +64,10 @@ class ProfileViewSet(viewsets.ViewSet):
             # url =""
             # payload = {"receptor":,"message":queryset.rand_int}
             # answer = requests.post(url,data=payload)
-            if requests.post["verify_number"] == queryset.rand_int:
-                serializer.save()
+            # if requests.post["verify_number"] == queryset.rand_int:
+                # profile_obj.is_verified = True
+                # profile_obj.save()
+                # serializer.save()
             return Response({"details": "profile vrified"})
 
 
@@ -112,3 +115,26 @@ class UserDocAdminViewSet(viewsets.ViewSet):
             return Response({"detail": "item updated !!"})
         else:
             return Response({"detail": "data is not valid"})
+
+
+class ProfileDocsViewSet(viewsets.ViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = UserIdentSerializer
+
+
+    def retrive(self, request,pk=None):
+        queryset = Profile.objects.all()
+        profile_obj = get_object_or_404(queryset, pk=pk)
+        if profile_obj.is_verified ==True:
+            serializer = self.serializer_class(profile_obj)
+            return Response(serializer.data)
+        else:
+        return Response({"detail":"your profile is not verified yet"})
+
+    def create(self,request):
+        serializer = self.serializer_class(request.data, user=self.request.user)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response({"detail":"your docs has been uploaded successfully"})
+        else:
+            return Response({"detail":"invalid data"})

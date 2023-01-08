@@ -27,8 +27,7 @@ class OrdersListApiView(viewsets.ViewSet):
 
         if serializer.is_valid(raise_exception=True):
             owner = self.request.data["owner"]
-            serializer.save()
-            profile_obj = Profile.objects.get(user=owner)
+            serializer.data["owner"] = self.request.data["owner"]
             return Response({"detail": "order created"})
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)

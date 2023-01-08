@@ -2,14 +2,16 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics
 
+import random
+import requests
 
 from rest_framework import viewsets
-from rest_framework.parsers import MultiPartParser, FormParser , DataAndFiles
+from rest_framework.parsers import MultiPartParser, FormParser, DataAndFiles
 from rest_framework.renderers import (
-                                        HTMLFormRenderer, 
-                                        JSONRenderer, 
-                                        BrowsableAPIRenderer,
-                                    )
+    HTMLFormRenderer,
+    JSONRenderer,
+    BrowsableAPIRenderer,
+)
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
@@ -36,77 +38,77 @@ class RegisterApiView(generics.GenericAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-def rand_int_generator():
-    pass
 class ProfileViewSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = ProfileSerializer
-    
+
     def retrive(self, request, pk=None):
-        # fo viewing profile 
+        # fo viewing profile
         queryset = Profile.objects.filter(user=self.request.user)
         profile_obj = get_object_or_404(queryset, pk=pk)
         serializer = self.serializer_class(profile_obj)
         return Response(serializer.data)
-    
+
     def partial_update(self, request, pk=None):
         # for verifying profile
         queryset = Profile.objects.filter(user=self.request.user)
         profile_obj = get_object_or_404(queryset, pk=pk)
-        serializer = self.serializer_class(profile_obj, partila=True)
-        
-        serializer.initial_data["user"]= self.request.user
+        serializer = self.serializer_class(profile_obj, partial=True)
+        serializer.initial_data["user"] = self.request.user
         if serializer.is_valid(raise_exception=True):
-            rand_int_generator(profile_obj)
-            # #######################
-            # call a function to send sms to user
-            # if send_sms():
-            #   .....
-            #   serializer.save()
-            return Response({"details":"profile vrified"})
+            rand_integer = random.randint(0, 999999)
+            queryset.rand_int = rand_integer
+            queryset.save()
+            # url api kavenegar
+            # url =""
+            # payload = {"receptor":,"message":queryset.rand_int}
+            # answer = requests.post(url,data=payload)
+            if requests.post["verify_number"] == queryset.rand_int:
+                serializer.save()
+            return Response({"details": "profile vrified"})
+
 
 class UserDocAdminViewSet(viewsets.ViewSet):
     """User docs admin view set"""
 
     permission_classes = [IsAuthenticated]
-    parser_classes = ( MultiPartParser, FormParser)
+    parser_classes = (MultiPartParser, FormParser)
     serializer_class = AdminUserIdentSerializer
     queryset = UserIdentDocs.objects.filter(is_complete=False)
-    
+
     def list(self, request):
-        serializer = self.serializer_class(self.queryset,many=True )
+        serializer = self.serializer_class(self.queryset, many=True)
         return Response(serializer.data)
-    
+
     def create(self, request):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
-            return Response({"detail":" Item Created !!"},status=status.HTTP_201_CREATED)
+            return Response(
+                {"detail": " Item Created !!"}, status=status.HTTP_201_CREATED
+            )
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-        
-    def retrive(self,request,pk=None):
-        doc_object = get_object_or_404(self.queryset,pk=pk)
+
+    def retrive(self, request, pk=None):
+        doc_object = get_object_or_404(self.queryset, pk=pk)
         serializer = self.serializer_class(doc_object)
         return Response(serializer.data)
-    
+
     def update(self, request, pk=None):
         doc_object = get_object_or_404(self.queryset, pk=pk)
-        serializer = self.serializer_class(doc_object, data= request.data)
+        serializer = self.serializer_class(doc_object, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response({"detail":"item updated !!"})
+            return Response({"detail": "item updated !!"})
         else:
-            return Response({"detail":"data is not valid"})
-        
-        
+            return Response({"detail": "data is not valid"})
+
     def partial_update(self, request, pk=None):
         doc_object = get_object_or_404(self.queryset, pk=pk)
-        serializer = self.serializer_class(doc_object, data= request.data, partial=True)
+        serializer = self.serializer_class(doc_object, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response({"detail":"item updated !!"})
+            return Response({"detail": "item updated !!"})
         else:
-            return Response({"detail":"data is not valid"})
-
-
+            return Response({"detail": "data is not valid"})

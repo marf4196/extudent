@@ -1,4 +1,4 @@
-from ...models import Orders
+from ...models import Orders, Withdraw
 from rest_framework import serializers
 
 
@@ -13,4 +13,13 @@ class ListCreateDeleteOrderSerializer(serializers.ModelSerializer):
             "description",
             "status",
             
+        ]
+class WithdrawSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Withdraw
+        fields = [
+        "user",
+        "amount",
+        "description",
         ]

@@ -61,6 +61,7 @@ class ProfileViewSet(viewsets.ViewSet):
             # #######################
             # call a function to send sms to user
             # if send_sms():
+            #   .....
             #   serializer.save()
             return Response({"details":"profile vrified"})
 

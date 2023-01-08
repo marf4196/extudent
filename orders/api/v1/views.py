@@ -1,7 +1,7 @@
-from .serializer import ListCreateDeleteOrderSerializer
+from .serializer import ListCreateDeleteOrderSerializer, WithdrawSerializer
 from rest_framework import viewsets, generics
 
-from ...models import Orders
+from ...models import Orders, Withdraw
 from accounts.models import Profile, UserIdentDocs
 
 from django.shortcuts import get_object_or_404
@@ -16,7 +16,6 @@ from rest_framework import status
 
 class OrdersListApiView(viewsets.ViewSet):
     queryset = Orders.objects.filter(status=False)
-    # permission_classes = [permissions.IsAuthenticated]
     permission_classes = [permissions.IsAuthenticated]
 
     serializer_class = ListCreateDeleteOrderSerializer
@@ -88,4 +87,26 @@ class UserCompletedOrders(viewsets.ViewSet):
         queryset = Orders.objects.filter(Q(owner=self.request.user)| Q(buyer=self.request.user)).filter(Q(status=True, pk=pk))
         serializer = self.serializer_class(queryset)
         return Response(serializer.data)
-        
+
+
+class Withdraw(viewsets.ViewSet):
+    # creating class for requesting withdraw
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = Withdraw.objects.all()
+    serializer_class = WithdrawSerializer
+    def list(self,request):
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
+
+    def create(self,request):
+        profile_obj = Profile.objects.get(pk=self.request.user)
+        serializer = self.serializer_class(request.data)
+        if serializer.initial_data["amount"] >= profile_obj.ballance:
+            serializer.data["user"]= self.request.user
+            if serializer.is_valid(raise_exception=True):
+                serializer.save()
+                return Response({"details": "withdraw request sent sucssesfully"})
+            else:
+                return Response({"details": "invalid data"})
+        else:
+            return Response({"details":"not enough money <3"})

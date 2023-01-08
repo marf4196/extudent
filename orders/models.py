@@ -39,3 +39,15 @@ class Orders(models.Model):
     @property
     def get_status(self):
         return self.status
+
+
+class Withdraw(models.Model):
+    """docstring for Withdraw"""
+    user = models.ForeignKey(User,on_delete=models.CASCADE, related_name="req_withdraw")
+    amount = models.PositiveBigIntegerField(default=0)
+    description = models.TextField()
+    status = models.BooleanField(default=False)
+
+    def __str__(self):
+        des = "%s:%s" %(self.user, self.amount)
+        return des 

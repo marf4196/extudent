@@ -39,7 +39,6 @@ class UserAdminConfig(UserAdmin):
         ),
     )
 
-
 admin.site.register(User, UserAdminConfig)
 admin.site.register(Profile)
 admin.site.register(UserIdentDocs)

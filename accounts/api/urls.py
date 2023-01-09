@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import RegisterApiView,ProfileViewSet, UserDocAdminViewSet, ProfileDocsViewSet
+
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -21,6 +22,6 @@ urlpatterns = [
     path("admin/userdocs/<int:pk>", UserDocAdminViewSet.as_view({"get":"retrive","put":"update","patch":"partial_update"}), name="user-docs-detail"),
     
 
-    path("userdocs/<int:pk>/"ProfileDocsViewSet.as_view({"get":"retrive",}), name="retrive-user-docs"),
-    path("userdocs/"ProfileDocsViewSet.as_view({"post":"create"}), name="upload-user-docs"),
+    path("userdocs/<int:pk>/",ProfileDocsViewSet.as_view({"get":"retrive",}), name="retrive-user-docs"),
+    path("userdocs/",ProfileDocsViewSet.as_view({"post":"create"}), name="upload-user-docs"),
 ]

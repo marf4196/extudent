@@ -56,19 +56,19 @@ class ProfileViewSet(viewsets.ViewSet):
         serializer = self.serializer_class(profile_obj, partial=True)
         serializer.initial_data["user"] = self.request.user
         if serializer.initial_data["phone_number"] != "":
-        if serializer.is_valid(raise_exception=True):
-            rand_integer = random.randint(0, 999999)
-            queryset.rand_int = rand_integer
-            queryset.save()
-            # url api kavenegar
-            # url =""
-            # payload = {"receptor":,"message":queryset.rand_int}
-            # answer = requests.post(url,data=payload)
-            # if requests.post["verify_number"] == queryset.rand_int:
-                # profile_obj.is_verified = True
-                # profile_obj.save()
-                # serializer.save()
-            return Response({"details": "profile vrified"})
+            if serializer.is_valid(raise_exception=True):
+                rand_integer = random.randint(0, 999999)
+                queryset.rand_int = rand_integer
+                queryset.save()
+                # url api kavenegar
+                # url =""
+                # payload = {"receptor":,"message":queryset.rand_int}
+                # answer = requests.post(url,data=payload)
+                # if requests.post["verify_number"] == queryset.rand_int:
+                    # profile_obj.is_verified = True
+                    # profile_obj.save()
+                    # serializer.save()
+                return Response({"details": "profile vrified"})
 
 
 class UserDocAdminViewSet(viewsets.ViewSet):
@@ -118,7 +118,7 @@ class UserDocAdminViewSet(viewsets.ViewSet):
 
 
 class ProfileDocsViewSet(viewsets.ViewSet):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     serializer_class = UserIdentSerializer
 
 
@@ -129,7 +129,7 @@ class ProfileDocsViewSet(viewsets.ViewSet):
             serializer = self.serializer_class(profile_obj)
             return Response(serializer.data)
         else:
-        return Response({"detail":"your profile is not verified yet"})
+            return Response({"detail":"your profile is not verified yet"})
 
     def create(self,request):
         serializer = self.serializer_class(request.data, user=self.request.user)

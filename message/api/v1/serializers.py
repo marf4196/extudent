@@ -7,7 +7,8 @@ class MessageSerializer(ModelSerializer):
     class Meta:
         model = Message
         fields = [
-            "owner",
+            "writer",
+            "reciver",
             "title",
             "text",
             "attached_pic",

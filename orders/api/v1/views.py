@@ -61,9 +61,9 @@ class OrdersListApiView(viewsets.ViewSet):
             if buyer_identity.is_complete == True:
                 buyer_profile = Profile.objects.get(user=buyer)
                 if serializer.is_valid(raise_exception=True):
-                    serializer.data["status"] = request.data["status"]
                     if buyer_profile.ballance >= (order_obj.price * order_obj.amount):
                         buyer_profile.ballance -= order_obj.price * order_obj.amount
+                        serializer.validated_data["status"] = request.data["status"]
                         serializer.save()
                         buyer_profile.save()
                     else:
@@ -78,6 +78,7 @@ class OrdersListApiView(viewsets.ViewSet):
                 return Response({"details": "you must upload your own identity docs"})
         else:
             return Response({"details": "you dont have access to update this order"})
+
 
 
 class UserCompletedOrders(viewsets.ViewSet):

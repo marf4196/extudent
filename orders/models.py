@@ -26,7 +26,7 @@ class Orders(models.Model):
     description = models.TextField()
     currency = models.CharField(choices=CURRENCY_CHOICES, max_length=20)
     buyer = models.ForeignKey(
-        User, on_delete=models.CASCADE, null=True, related_name="order_buyer"
+        User, on_delete=models.CASCADE, null=True,blank=True, related_name="order_buyer"
     )
     order_type = models.CharField(
         choices=ORDER_TYPE, default=(SELL, "SELL"), max_length=50

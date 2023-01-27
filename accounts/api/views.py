@@ -6,6 +6,8 @@ import random
 import requests
 
 from rest_framework import viewsets
+from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.parsers import MultiPartParser, FormParser, DataAndFiles
 from rest_framework.renderers import (
     HTMLFormRenderer,
@@ -18,6 +20,21 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from django.shortcuts import get_object_or_404
 from .serializers import ProfileSerializer, RegisterSerializer, AdminUserIdentSerializer, UserIdentSerializer
 from accounts.models import Profile, UserIdentDocs
+
+
+
+class LogoutView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        try:
+            refresh_token = request.data["refresh_token"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class RegisterApiView(generics.GenericAPIView):
@@ -53,21 +70,22 @@ class ProfileViewSet(viewsets.ViewSet):
         # add number for verifying profile
         queryset = Profile.objects.filter(user=self.request.user)
         profile_obj = get_object_or_404(queryset, pk=pk)
-        serializer = self.serializer_class(profile_obj, partial=True)
-        serializer.initial_data["user"] = self.request.user
-        if serializer.initial_data["phone_number"] != "":
-            if serializer.is_valid(raise_exception=True):
-                rand_integer = random.randint(0, 999999)
-                queryset.rand_int = rand_integer
-                queryset.save()
+        serializer = self.serializer_class(profile_obj, data=request.data, partial=True)
+
+        if serializer.is_valid(raise_exception=True):
+            serializer.data["user"] = self.request.user
+            if serializer.data["phone_number"] != "":
+                rand_integer = random.randint(100000, 999999)
+                profile_obj.rand_int = rand_integer
+
                 # url api kavenegar
                 # url =""
                 # payload = {"receptor":,"message":queryset.rand_int}
                 # answer = requests.post(url,data=payload)
-                # if requests.post["verify_number"] == queryset.rand_int:
-                    # profile_obj.is_verified = True
-                    # profile_obj.save()
-                    # serializer.save()
+                # if requests.post["verify_number"] == profile_obj.rand_int:
+                # profile_obj.is_verified = True
+                profile_obj.save()
+                # serializer.save()
                 return Response({"details": "profile vrified"})
 
 
@@ -121,20 +139,20 @@ class ProfileDocsViewSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = UserIdentSerializer
 
-
-    def retrive(self, request,pk=None):
-        queryset = Profile.objects.all()
+    def retrive(self, request, pk=None):
+        queryset = Profile.objects.filter(user=request.user)
         profile_obj = get_object_or_404(queryset, pk=pk)
-        if profile_obj.is_verified ==True:
-            serializer = self.serializer_class(profile_obj)
-            return Response(serializer.data)
-        else:
-            return Response({"detail":"your profile is not verified yet"})
+        if pk == profile_obj.id:
+            if profile_obj.is_verified:
+                serializer = self.serializer_class(profile_obj)
+                return Response(serializer.data)
+            else:
+                return Response({"detail": "your profile is not verified yet"})
 
-    def create(self,request):
+    def create(self, request):
         serializer = self.serializer_class(request.data, user=self.request.user)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
-            return Response({"detail":"your docs has been uploaded successfully"})
+            return Response({"detail": "your docs has been uploaded successfully"})
         else:
-            return Response({"detail":"invalid data"})
+            return Response({"detail": "invalid data"})

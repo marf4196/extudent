@@ -10,7 +10,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["email", "password", "password1"]
+        fields = ["phone_number", "password", "password1"]
 
     def validate(self, data):
         if data["password"] != data["password1"]:
@@ -56,3 +56,10 @@ class UserIdentSerializer(serializers.ModelSerializer):
             "img",
             "video",
         ]
+
+class UserWalletSerializer( serializers.ModelSerializer):
+    
+    class Meta:
+        model = Profile
+        fields = ["balance",]
+        

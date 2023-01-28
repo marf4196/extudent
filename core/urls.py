@@ -14,34 +14,34 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="CustomUser Django API",
+        title="Djoser API",
         default_version="v1",
-        description="A Base authentication app with custom user model",
-        terms_of_service="https://www.google.com/policies/terms/",
-        contact=openapi.Contact(email="bigdeli.ali3@gmail.com"),
-        license=openapi.License(name="MIT License"),
+        description="REST implementation of Django authentication system. djoser library provides a set of Django Rest Framework views to handle basic actions such as registration, login, logout, password reset and account activation. It works with custom user model.",
+        contact=openapi.Contact(email="contact@snippets.local"),
+        license=openapi.License(name="BSD License"),
     ),
     public=True,
     permission_classes=(permissions.AllowAny,),
 )
-
 urlpatterns = [
     path("admin/", admin.site.urls),
     # accounts app
     path("accounts/", include("accounts.urls")),
+    re_path(r'^auth/', include('djoser.urls')),
     # messages app
     path("messages/", include("message.urls")),
     # order app
     path("orders/", include("orders.urls")),
     # api authentication
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
+    re_path(r'^auth/', include('djoser.urls.authtoken')),
     # api doc app
     path(
         "swagger/api.json", schema_view.without_ui(cache_timeout=0), name="schema-json"

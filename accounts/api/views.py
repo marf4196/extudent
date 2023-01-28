@@ -18,7 +18,7 @@ from rest_framework.renderers import (
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from django.shortcuts import get_object_or_404
-from .serializers import ProfileSerializer, RegisterSerializer, AdminUserIdentSerializer, UserIdentSerializer
+from .serializers import ProfileSerializer, RegisterSerializer, AdminUserIdentSerializer, UserIdentSerializer,UserWalletSerializer
 from accounts.models import Profile, UserIdentDocs
 
 
@@ -46,7 +46,18 @@ class RegisterApiView(generics.GenericAPIView):
         """
         Register class
         """
+ # from django.contrib.auth import authenticate, login
 
+# def my_view(request):
+#     username = request.POST['username']
+#     password = request.POST['password']
+#     user = authenticate(request, username=username, password=password)
+#     if user is not None:
+#         login(request, user)
+#         # Redirect to a success page.
+#         ...
+#     else:
+#         # Return an 'invalid login' error message.
         serializer = RegisterSerializer(data=request.data, many=False)
 
         if serializer.is_valid():
@@ -156,3 +167,12 @@ class ProfileDocsViewSet(viewsets.ViewSet):
             return Response({"detail": "your docs has been uploaded successfully"})
         else:
             return Response({"detail": "invalid data"})
+class UserWalletViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserWalletSerializer
+    def retrieve(self, request):
+        queryset = Profile.objects.get(user = self.request.user)
+        profile_obj = get_object_or_404(queryset)
+        serializer = self.serializer_class (profile_obj)
+        
+        return Response(serializer.data)

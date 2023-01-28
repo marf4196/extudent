@@ -19,14 +19,17 @@ class OrdersListApiView(viewsets.ViewSet):
     serializer_class = ListCreateDeleteOrderSerializer
 
     def list(self, request):
-        serializer = self.serializer_class(self.queryset, many=True)
-        return Response(serializer.data)
+        data =[] 
+        queryset = Orders.objects.filter(status=False).filter(currency = "USD")
+
+        USD_serializer = self.serializer_class(queryset, many=True)
+        data.append(USD_serializer)
+        return Response(data)
 
     def create(self, request):
         serializer = self.serializer_class(data=request.data)
 
         if serializer.is_valid(raise_exception=True):
-            owner = self.request.data["owner"]
             serializer.data["owner"] = self.request.data["owner"]
             return Response({"detail": "order created"})
         else:

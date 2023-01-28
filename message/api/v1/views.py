@@ -23,7 +23,7 @@ class UserMessageViewSet(viewsets.ViewSet):
     serializer_class = MessageSerializer
 
     def list(self, request):
-        queryset = Message.objects.filter(Q(is_recived=True)).filter(Q(reciver=self.request.user) | Q(writer=self.request.user))
+        queryset = Message.objects.filter(Q(is_recived=True)).filter(Q(reciver=self.request.user) | Q(writer=self.request.user)).order_by("id")
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 

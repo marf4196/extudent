@@ -5,8 +5,8 @@ from django.contrib.auth.admin import UserAdmin
 
 class UserAdminConfig(UserAdmin):
     model = User
-    search_fields = ("email",)
-    list_filter = ("email", "is_active", "is_staff")
+    search_fields = ("email","phone_number")
+    list_filter = ("email","phone_number", "is_active", "is_staff")
     ordering = ("-created_date",)
     list_display = ("email", "is_active", "is_staff")
     fieldsets = (
@@ -30,6 +30,7 @@ class UserAdminConfig(UserAdmin):
                 "classes": ("wide",),
                 "fields": (
                     "email",
+                    "phone_number",
                     "password1",
                     "password2",
                     "is_active",

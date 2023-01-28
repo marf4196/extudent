@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "corsheaders"    
+    "corsheaders",   
     "rest_framework",
     "rest_framework.authtoken",
     "rest_framework_simplejwt",
@@ -181,5 +181,11 @@ SIMPLE_JWT = {
     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
 }
 CORS_ALLOWED_ORIGINS = [
-    "http://146.70.92.211/",
+    "http://146.70.92.211",
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+    "http://127.0.0.1:3000",
+    "http://localhost:3000",
+    "http://0.0.0.0:8000",
+    "http://0.0.0.0:3000",
 ]

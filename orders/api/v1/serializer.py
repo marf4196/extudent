@@ -6,11 +6,11 @@ class ListCreateDeleteOrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Orders
         fields = [
-            "owner",
             "amount",
             "price",
             "currency",
             "description",
+            "order_type",
             "status",
             
         ]

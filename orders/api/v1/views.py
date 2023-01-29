@@ -19,12 +19,12 @@ class OrdersListApiView(viewsets.ViewSet):
     serializer_class = ListCreateDeleteOrderSerializer
 
     def list(self, request):
-        data =[] 
-        queryset = Orders.objects.filter(status=False).filter(currency = "USD")
+        # data =[] 
+        queryset = Orders.objects.filter(status=False)
 
         USD_serializer = self.serializer_class(queryset, many=True)
-        data.append(USD_serializer)
-        return Response(data)
+        # data.append(USD_serializer)
+        return Response(USD_serializer.data)
 
     def create(self, request):
         serializer = self.serializer_class(data=request.data)

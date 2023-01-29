@@ -8,7 +8,7 @@ class UserAdminConfig(UserAdmin):
     search_fields = ("email","phone_number")
     list_filter = ("email","phone_number", "is_active", "is_staff")
     ordering = ("-created_date",)
-    list_display = ("email", "is_active", "is_staff")
+    list_display = ("phone_number", "is_active", "is_staff")
     fieldsets = (
         ("Authentication", {"fields": ("email",)}),
         ("Permissions", {"fields": ("is_staff", "is_active")}),

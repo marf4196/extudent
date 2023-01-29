@@ -43,7 +43,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     
     phone_number = models.CharField(_("phone number"),max_length=11, unique=True)
-    email = models.EmailField(_("email"), unique=True)
+    email = models.EmailField(_("email"), unique=False)
     is_staff = models.BooleanField(default=False)
     
     is_active = models.BooleanField(default=True)
@@ -72,7 +72,7 @@ class Profile(models.Model):
     rand_int = models.PositiveBigIntegerField(null=True, blank=True)
 
     def __str__(self):
-        return self.user.email
+        return self.user.phone_number
 
 
 @receiver(post_save, sender=User)

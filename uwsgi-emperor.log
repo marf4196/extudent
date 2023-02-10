@@ -1,0 +1,98 @@
+*** Starting uWSGI 2.0.21 (64bit) on [Fri Feb 10 16:15:00 2023] ***
+compiled with version: 9.4.0 on 10 February 2023 14:38:53
+os: Linux-5.4.0-29-generic #33-Ubuntu SMP Wed Apr 29 14:32:27 UTC 2020
+nodename: 74632.AZARONLINE.COM
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 2
+current working directory: /root/extudent
+detected binary path: /root/extudent/venv/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /root/extudent/
+your processes number limit is 3581
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /root/extudent/extudent.sock fd 3
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+Python version: 3.8.10 (default, Nov 14 2022, 12:59:47)  [GCC 9.4.0]
+!!! Python Home is not a directory: /root/extudent/env/md !!!
+Set PythonHome to /root/extudent/env/md
+Python path configuration:
+  PYTHONHOME = '/root/extudent/env/md'
+  PYTHONPATH = (not set)
+  program name = '/root/extudent/env/md/bin/python'
+  isolated = 0
+  environment = 1
+  user site = 1
+  import site = 1
+  sys._base_executable = '/root/extudent/env/md/bin/python'
+  sys.base_prefix = '/root/extudent/env/md'
+  sys.base_exec_prefix = '/root/extudent/env/md'
+  sys.executable = '/root/extudent/env/md/bin/python'
+  sys.prefix = '/root/extudent/env/md'
+  sys.exec_prefix = '/root/extudent/env/md'
+  sys.path = [
+    '/root/extudent/env/md/lib/python38.zip',
+    '/root/extudent/env/md/lib/python3.8',
+    '/root/extudent/env/md/lib/python3.8/lib-dynload',
+  ]
+Fatal Python error: init_fs_encoding: failed to get the Python codec of the filesystem encoding
+Python runtime state: core initialized
+ModuleNotFoundError: No module named 'encodings'
+
+Current thread 0x00007f7c9bb3fb80 (most recent call first):
+<no Python frame>
+*** Starting uWSGI 2.0.21 (64bit) on [Fri Feb 10 16:15:06 2023] ***
+compiled with version: 9.4.0 on 10 February 2023 14:38:53
+os: Linux-5.4.0-29-generic #33-Ubuntu SMP Wed Apr 29 14:32:27 UTC 2020
+nodename: 74632.AZARONLINE.COM
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 2
+current working directory: /root/extudent
+detected binary path: /root/extudent/venv/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /root/extudent/
+your processes number limit is 3581
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /root/extudent/extudent.sock fd 3
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+Python version: 3.8.10 (default, Nov 14 2022, 12:59:47)  [GCC 9.4.0]
+!!! Python Home is not a directory: /root/extudent/env/md !!!
+Set PythonHome to /root/extudent/env/md
+Python path configuration:
+  PYTHONHOME = '/root/extudent/env/md'
+  PYTHONPATH = (not set)
+  program name = '/root/extudent/env/md/bin/python'
+  isolated = 0
+  environment = 1
+  user site = 1
+  import site = 1
+  sys._base_executable = '/root/extudent/env/md/bin/python'
+  sys.base_prefix = '/root/extudent/env/md'
+  sys.base_exec_prefix = '/root/extudent/env/md'
+  sys.executable = '/root/extudent/env/md/bin/python'
+  sys.prefix = '/root/extudent/env/md'
+  sys.exec_prefix = '/root/extudent/env/md'
+  sys.path = [
+    '/root/extudent/env/md/lib/python38.zip',
+    '/root/extudent/env/md/lib/python3.8',
+    '/root/extudent/env/md/lib/python3.8/lib-dynload',
+  ]
+Fatal Python error: init_fs_encoding: failed to get the Python codec of the filesystem encoding
+Python runtime state: core initialized
+ModuleNotFoundError: No module named 'encodings'
+
+Current thread 0x00007ff057131b80 (most recent call first):
+<no Python frame>
